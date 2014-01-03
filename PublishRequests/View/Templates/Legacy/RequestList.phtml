@@ -1,0 +1,32 @@
+<div id="lwAdminMainInputWrapperNoTabs">
+    <div id="cformHeader"><?php echo $this->I18n->t('angeforderte Ver&ouml;ffentlichungen'); ?></div>
+    <fieldset class="lwadminform">
+        <table class="lwPageCommentTable" style="width:90%">
+            <tr class="header">
+                <td width="5%"><?php echo $this->I18n->t('ID'); ?></td>
+                <td width="25%"><?php echo $this->I18n->t('Name'); ?></td>
+                <td width="10%"><?php echo $this->I18n->t('angefordert von'); ?></td>
+                <td width="10%"><?php echo $this->I18n->t('angefordert am'); ?></td>
+            </tr>		
+
+            <?php $oddEven = "odd"; ?>
+
+            <?php foreach ($this->requests as $request): ?>
+                <?php
+                if ($oddEven == "odd") {
+                    $oddEven = "even";
+                } else {
+                    $oddEven = "odd";
+                }
+                ?>
+                <tr class="<?php echo $oddEven; ?>">
+                    <td><?php echo $request["item_id"]; ?></td>
+                    <td><a href="<?php echo $this->Uri->buildUri(array('obj' => 'content', "pid" => $request["item_id"]), false); ?>" title="<?php echo $this->I18n->t('zur Inhaltsbearbeitung'); ?>">&raquo; <?php echo $request["pagename"]; ?></a></td>
+                    <td><?php echo $request["username"]; ?></td>
+                    <td><?php echo substr($request["lw_date"], 6, 2) . "." . substr($request["lw_date"], 4, 2) . "." . substr($request["lw_date"], 0, 4); ?></td>
+                </tr>		
+            <?php endforeach; ?>
+
+        </table>
+    </fieldset>
+</div>	

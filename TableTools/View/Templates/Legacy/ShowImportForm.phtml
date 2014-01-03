@@ -1,0 +1,9 @@
+<fieldset class="lwadminform">
+    <legend class="lwadminform">Import Xml</legend>
+    <form action="<?php echo $this->Uri->buildUri(array('obj'=>'tabletools', "cmd" => "importer", "import" => 1), false); ?>" method="post" enctype="multipart/form-data">
+        <?php echo $this->I18n->t('datei'); ?>&nbsp;&nbsp;&nbsp;<input type="file" name="xmlFile" class="file" /><br/><br/>
+        <textarea style="width:100%; height:400px;" name="xmlText"><?php if(isset($this->xml)) { echo $this->xml; } ?></textarea><br/><br/>
+        <span style="line-height:23px;">Debug </span><input type="checkbox" name="debug" value="1" checked="checked"><br/><br/>
+        <input class="btn" type="submit" value="Import" class="submit">
+    </form>
+</fieldset>

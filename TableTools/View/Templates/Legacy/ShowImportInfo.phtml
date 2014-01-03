@@ -1,0 +1,11 @@
+<fieldset class="lwadminform">
+    <legend class="lwadminform">Import Info</legend>
+    <div>
+        <?php if (isset($this->debug) && !$this->debug): ?>
+            <p style="font-size: 16px; font-weight: bold;"><?php echo $this->I18n->t('statementsausgefuehrt'); ?></p><br>
+        <?php endif; ?>
+        <?php if (isset($this->debugOutput)) {
+            echo $this->debugOutput;
+        } ?>
+    </div>
+</fieldset>

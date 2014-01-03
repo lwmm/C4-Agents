@@ -1,0 +1,6 @@
+<div class="lwBoxLeftnavi" onClick="changeUrl('<?php echo $this->Uri->buildUri(array('obj'=>'admin'), false); ?>');"><?php echo $this->I18n->t('zur&uuml;ck'); ?></div>
+
+<div class="lwBoxLeftContent">
+    <div class="cNavEntry" onclick="changeUrl('<?php echo $this->Uri->buildUri(array('obj'=>'tabletools', "cmd" => "exporter"), false); ?>');"<?php if ($this->command == "exporter" || !$this->command): ?>style="background-color: #0072BB;"<?php endif; ?>> Exporter </div>
+    <div class="cNavEntry" onclick="changeUrl('<?php echo $this->Uri->buildUri(array('obj'=>'tabletools', "cmd" => "importer"), false); ?>');"<?php if ($this->command == "importer"): ?>style="background-color: #0072BB;"<?php endif; ?>> Importer </div>
+</div>

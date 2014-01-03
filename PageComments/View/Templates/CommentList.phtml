@@ -1,0 +1,37 @@
+<div id="lwAdminMainInputWrapperNoTabs">
+    <div id="cformHeader"><?php echo $this->I18n->t('Seitenkommentare'); ?></div>
+    <fieldset class="lwadminform">
+        <table class="lwPageCommentTable" style="width:90%">
+            <tr class="header">
+                <td width="5%"><?php echo $this->I18n->t('ID'); ?></td>
+                <td width="25%"><?php echo $this->I18n->t('Name'); ?></td>
+                <td width="10%"><?php echo $this->I18n->t('ver&ouml;ffentlicht'); ?></td>
+                <td width="10%"><?php echo $this->I18n->t('ge&auml;ndert'); ?></td>
+                <td width="50%"><?php echo $this->I18n->t('Kommentar'); ?></td>
+            </tr>		
+
+            <?php $oddEven = "odd"; ?>
+
+            <?php foreach ($this->commentList as $comment): ?>
+
+                <?php
+                if ($oddEven == "odd") {
+                    $oddEven = "even";
+                } else {
+                    $oddEven = "odd";
+                }
+                ?>
+
+                <tr class="<?php echo $oddEven; ?>">
+                    <td><?php echo $comment["id"]; ?></td>
+                    <td><a href="<?php echo $this->Uri->buildUri(array('obj' => 'content', "pid" => $comment["id"]), false); ?>" title="<?php echo $this->I18n->t('zur Inhaltsbearbeitung'); ?>">&raquo; <?php echo $comment["name"]; ?></a></td>
+                    <td><?php echo $comment["published"]; ?></td>
+                    <td><?php echo $comment["changed"] ?></td>
+                    <td><?php echo $comment["pagecomment"]; ?></td>
+                </tr>		
+
+            <?php endforeach; ?>
+
+        </table>
+    </fieldset>
+</div>
