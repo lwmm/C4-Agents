@@ -42,7 +42,7 @@ class Controller extends BaseController
 
     private function showCommentList()
     {
-        $repository = new Repository(\lw_registry::getInstance()->getEntry("db"));
+        $repository = new Repository();
         $comments = $this->prepareCommentList($repository->getAllPagesWithComments());
 
         $view = $this->getView('CommentList');

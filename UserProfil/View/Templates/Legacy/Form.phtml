@@ -1,0 +1,107 @@
+<style>
+    .error_class { background-color:yellow; border-color:red; }
+</style>
+
+
+<!-- lw:blockstart main -->
+<!-- lw:if secondaryUser -->
+<script>
+//    alert('[[[Eine weitere Person arbeitet bereits auf dieser Seite]]]');
+</script>
+<!-- lw:endif secondaryUser -->
+<!-- Page Form Start -->
+<form action="<?php echo $this->Uri->buildUri(array('obj'=>'userprofil'), false); ?>" id="userForm" method="post">
+    <input id="version" type="hidden" name="version" value="<!-- lw:var version -->">
+    <input id="version" type="hidden" name="sent" value="1">
+    <div id="cformHeader"><?php echo $this->I18n->t('Userprofil'); ?></div>
+    <div id="cformControls">
+        <a class="cContentLink" id="history" onClick="showHistory();" href="#">&raquo; <?php echo $this->I18n->t('Historie'); ?></a>
+    </div>	
+    <?php if(isset($this->errors)): ?>
+    <fieldset class="lw_error">
+        <legend class="lw_error">Error</legend>
+        <ul>
+            <?php if (isset($this->errors["error_ver"])): ?><li><?php echo $this->I18n->t('neuere Version vorhanden, Speichern nicht m&ouml;glich (bitte die Seite neu laden)!'); ?></li><?php endif; ?>
+            <!-- lw:if error1 --><li><?php echo $this->I18n->t('Der Username enth&auml;lt nicht erlaubte Zeichen'); ?></li><!-- lw:endif error1 -->
+            <!-- lw:if error2 --><li><?php echo $this->I18n->t('Der Username besitzt eine unerlaubte L&auml;nge, bitte zwischen 3 und 255 Zeichen verwenden!'); ?></li><!-- lw:endif error2 -->
+            <!-- lw:if error3 --><li><?php echo $this->I18n->t('Bitte einen anderen Usernamen verwenden, dieser existiert bereits'); ?></li><!-- lw:endif error3 -->
+            <!-- lw:if error4 --><li><?php echo $this->I18n->t('Das Passwort ist zu kurz, bitte mind. 5 Zeichen verwenden'); ?></li><!-- lw:endif error4 -->
+            <!-- lw:if error5 --><li><?php echo $this->I18n->t('Das Passwort und dessen WDHL stimme nicht &uuml;berein'); ?></li><!-- lw:endif error5 -->
+            <!-- lw:if error6 --><li><?php echo $this->I18n->t('Der Vorname besitzt eine unerlaubte L&auml;nge, bitte weniger als 256 Zeichen verwenden!'); ?></li><!-- lw:endif error6 -->
+            <!-- lw:if error7 --><li><?php echo $this->I18n->t('Der Nachname besitzt eine unerlaubte L&auml;nge, bitte weniger als 256 Zeichen verwenden!'); ?></li><!-- lw:endif error7 -->
+            <!-- lw:if error8 --><li><?php echo $this->I18n->t('Bitte eine korrekte Email-Syntax verwenden'); ?></li><!-- lw:endif error8 -->
+        </ul>
+    </fieldset>
+    <?php endif; ?>
+    <!-- lw:if showForm -->
+    <fieldset class="lwadminform">
+        <legend class="lwadminform"><?php echo $this->I18n->t('Grunddaten'); ?></legend>
+        <label for="name" class="lwadminform"><?php echo $this->I18n->t('Name'); ?>:</label>
+        <input class="textbox" id="name" type="text" name="name" value="<!-- lw:var name -->">
+        <br />		
+        <label for="password" class="lwadminform"><?php echo $this->I18n->t('Passwort'); ?>:</label>
+        <input class="textbox" id="password" type="password" name="password">
+        <br />		
+        <label for="password_wdhl" class="lwadminform"><?php echo $this->I18n->t('Passwort WDHL'); ?>:</label>
+        <input class="textbox" id="password_wdhl" type="password" size="50" name="password_wdhl">
+        <br />		
+        <label for="firstname" class="lwadminform"><?php echo $this->I18n->t('Vorname'); ?>:</label>
+        <input class="textbox" id="firstname" type="text" name="firstname" value="<!-- lw:var firstname -->">
+        <br />		
+        <label for="lastname" class="lwadminform"><?php echo $this->I18n->t('Nachname'); ?>:</label>
+        <input class="textbox" id="lastname" type="text" name="lastname" value="<!-- lw:var lastname -->">
+        <br />		
+        <label for="email" class="lwadminform"><?php echo $this->I18n->t('Email'); ?>:</label>
+        <input class="textbox" id="email" type="text" name="email" value="<!-- lw:var email -->">
+        <br />		
+        <p><input class="formbutton" type="submit" value="&raquo; <?php echo $this->I18n->t('speichern'); ?>" id="speichern"></p>
+    </fieldset>
+
+    <fieldset class="lwadminform">
+        <legend class="lwadminform"><?php echo $this->I18n->t('Shortcuts'); ?></legend>
+        <label for="shortcut1" class="lwadminform"><?php echo $this->I18n->t('Shortcut 1'); ?>:</label>
+        <select name="shortcut1" id="shortcut1" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <!-- lw:blockstart shortcut1 -->
+            <option value="<!-- lw:var id -->" <!-- lw:var selected -->><!-- lw:var name --></option>
+            <!-- lw:blockend shortcut1 -->
+        </select>
+        <br />		
+        <label for="shortcut2" class="lwadminform"><?php echo $this->I18n->t('Shortcut 2'); ?>:</label>
+        <select name="shortcut2" id="shortcut2" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <!-- lw:blockstart shortcut2 -->
+            <option value="<!-- lw:var id -->" <!-- lw:var selected -->><!-- lw:var name --></option>
+            <!-- lw:blockend shortcut2 -->
+        </select>
+        <br />		
+        <label for="shortcut3" class="lwadminform"><?php echo $this->I18n->t('Shortcut 3'); ?>:</label>
+        <select name="shortcut3" id="shortcut3" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <!-- lw:blockstart shortcut3 -->
+            <option value="<!-- lw:var id -->" <!-- lw:var selected -->><!-- lw:var name --></option>
+            <!-- lw:blockend shortcut3 -->
+        </select>
+        <br />		
+        <label for="shortcut4" class="lwadminform"><?php echo $this->I18n->t('Shortcut 4'); ?>:</label>
+        <select name="shortcut4" id="shortcut4" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <!-- lw:blockstart shortcut4 -->
+            <option value="<!-- lw:var id -->" <!-- lw:var selected -->><!-- lw:var name --></option>
+            <!-- lw:blockend shortcut4 -->
+        </select>
+        <br />		
+        <label for="shortcut5" class="lwadminform"><?php echo $this->I18n->t('Shortcut 5'); ?>:</label>
+        <select name="shortcut5" id="shortcut5" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <!-- lw:blockstart shortcut5 -->
+            <option value="<!-- lw:var id -->" <!-- lw:var selected -->><!-- lw:var name --></option>
+            <!-- lw:blockend shortcut5 -->
+        </select>
+        <br />		
+        <p><input class="formbutton" type="submit" value="&raquo; <?php echo $this->I18n->t('speichern'); ?>" id="speichern"></p>
+    </fieldset>	
+</form>
+<!-- lw:endif showForm -->
+<!-- Page Form End -->
+<!-- lw:blockend main -->

@@ -1,0 +1,100 @@
+<style>
+    .error_class { background-color:yellow; border-color:red; }
+</style>
+
+<!-- lw:if secondaryUser -->
+<script>
+//    alert('[[[Eine weitere Person arbeitet bereits auf dieser Seite]]]');
+</script>
+<!-- lw:endif secondaryUser -->
+
+<form action="<?php echo $this->Uri->buildUri(array('obj'=>'userprofil'), false); ?>" id="userForm" method="post">
+    <input id="version" type="hidden" name="version" value="<?php echo $this->user->getValueByKey("lw_version"); ?>">
+    <input id="version" type="hidden" name="sent" value="1">
+    <div id="cformHeader"><?php echo $this->I18n->t('Userprofil'); ?></div>
+    
+    <?php if(isset($this->error) && count($this->error) > 0): ?>
+    <fieldset class="lw_error">
+        <legend class="lw_error">Error</legend>
+        <ul>
+            <?php if (isset($this->error["version"])): ?><li><?php echo $this->I18n->t('neuere Version vorhanden, Speichern nicht m&ouml;glich (bitte die Seite neu laden)!'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["name"]) && in_array("allowedLetters", $this->error["name"])): ?><li><?php echo $this->I18n->t('Der Username enth&auml;lt nicht erlaubte Zeichen'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["name"]) && in_array("length", $this->error["name"])): ?><li><?php echo $this->I18n->t('Der Username besitzt eine unerlaubte L&auml;nge, bitte zwischen 3 und 255 Zeichen verwenden!'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["name"]) && in_array("existing", $this->error["name"])): ?><li><?php echo $this->I18n->t('Bitte einen anderen Usernamen verwenden, dieser existiert bereits'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["password"]) && in_array("length", $this->error["password"])): ?><li><?php echo $this->I18n->t('Das Passwort ist zu kurz, bitte mind. 5 Zeichen verwenden'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["password_wdhl"]) && in_array("identical", $this->error["password_wdhl"])): ?><li><?php echo $this->I18n->t('Das Passwort und dessen WDHL stimme nicht &uuml;berein'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["firstname"]) && in_array("length", $this->error["firstname"])): ?><li><?php echo $this->I18n->t('Der Vorname besitzt eine unerlaubte L&auml;nge, bitte weniger als 256 Zeichen verwenden!'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["lastname"]) && in_array("length", $this->error["lastname"])): ?><li><?php echo $this->I18n->t('Der Nachname besitzt eine unerlaubte L&auml;nge, bitte weniger als 256 Zeichen verwenden!'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["email"]) && in_array("syntax", $this->error["email"])): ?><li><?php echo $this->I18n->t('Bitte eine korrekte Email-Syntax verwenden'); ?></li><?php endif; ?>
+        </ul>
+    </fieldset>
+    <?php endif; ?>
+    <!-- lw:if showForm -->
+    <fieldset class="lwadminform">
+        <legend class="lwadminform"><?php echo $this->I18n->t('Grunddaten'); ?></legend>
+        <label for="name" class="lwadminform"><?php echo $this->I18n->t('Name'); ?>:</label>
+        <input class="textbox" id="name" type="text" name="name" value="<?php echo $this->user->getValueByKey("name"); ?>">
+        <br />		
+        <label for="password" class="lwadminform"><?php echo $this->I18n->t('Passwort'); ?>:</label>
+        <input class="textbox" id="password" type="password" name="password">
+        <br />		
+        <label for="password_wdhl" class="lwadminform"><?php echo $this->I18n->t('Passwort WDHL'); ?>:</label>
+        <input class="textbox" id="password_wdhl" type="password" size="50" name="password_wdhl">
+        <br />		
+        <label for="firstname" class="lwadminform"><?php echo $this->I18n->t('Vorname'); ?>:</label>
+        <input class="textbox" id="firstname" type="text" name="firstname" value="<?php echo $this->user->getValueByKey("firstname"); ?>">
+        <br />		
+        <label for="lastname" class="lwadminform"><?php echo $this->I18n->t('Nachname'); ?>:</label>
+        <input class="textbox" id="lastname" type="text" name="lastname" value="<?php echo $this->user->getValueByKey("lastname"); ?>">
+        <br />		
+        <label for="email" class="lwadminform"><?php echo $this->I18n->t('Email'); ?>:</label>
+        <input class="textbox" id="email" type="text" name="email" value="<?php echo $this->user->getValueByKey("email"); ?>">
+        <br />		
+        <p><input class="formbutton" type="submit" value="&raquo; <?php echo $this->I18n->t('speichern'); ?>" id="speichern"></p>
+    </fieldset>
+
+    <fieldset class="lwadminform">
+        <legend class="lwadminform"><?php echo $this->I18n->t('Shortcuts'); ?></legend>
+        <label for="shortcut1" class="lwadminform"><?php echo $this->I18n->t('Shortcut 1'); ?>:</label>
+        <select name="shortcut1" id="shortcut1" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <?php foreach($this->shortcuts as $sc): ?>
+            <option value="<?php echo $sc["id"]; ?>" <?php if($this->user->getValueByKey("shortcut1") == $sc["id"]): ?>selected="selected"<?php endif; ?>><?php echo $sc["name"]; ?></option>            
+            <?php endforeach; ?>
+        </select>
+        <br />		
+        <label for="shortcut2" class="lwadminform"><?php echo $this->I18n->t('Shortcut 2'); ?>:</label>
+        <select name="shortcut2" id="shortcut2" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <?php foreach($this->shortcuts as $sc): ?>
+            <option value="<?php echo $sc["id"]; ?>" <?php if($this->user->getValueByKey("shortcut2") == $sc["id"]): ?>selected="selected"<?php endif; ?>><?php echo $sc["name"]; ?></option>            
+            <?php endforeach; ?>
+        </select>
+        <br />		
+        <label for="shortcut3" class="lwadminform"><?php echo $this->I18n->t('Shortcut 3'); ?>:</label>
+        <select name="shortcut3" id="shortcut3" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <?php foreach($this->shortcuts as $sc): ?>
+            <option value="<?php echo $sc["id"]; ?>" <?php if($this->user->getValueByKey("shortcut3") == $sc["id"]): ?>selected="selected"<?php endif; ?>><?php echo $sc["name"]; ?></option>            
+            <?php endforeach; ?>
+        </select>
+        <br />		
+        <label for="shortcut4" class="lwadminform"><?php echo $this->I18n->t('Shortcut 4'); ?>:</label>
+        <select name="shortcut4" id="shortcut4" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <?php foreach($this->shortcuts as $sc): ?>
+            <option value="<?php echo $sc["id"]; ?>" <?php if($this->user->getValueByKey("shortcut4") == $sc["id"]): ?>selected="selected"<?php endif; ?>><?php echo $sc["name"]; ?></option>            
+            <?php endforeach; ?>
+        </select>
+        <br />		
+        <label for="shortcut5" class="lwadminform"><?php echo $this->I18n->t('Shortcut 5'); ?>:</label>
+        <select name="shortcut5" id="shortcut5" class="textbox_select">
+            <option value=""><?php echo $this->I18n->t('keine Auswahl'); ?></option>
+            <?php foreach($this->shortcuts as $sc): ?>
+            <option value="<?php echo $sc["id"]; ?>" <?php if($this->user->getValueByKey("shortcut5") == $sc["id"]): ?>selected="selected"<?php endif; ?>><?php echo $sc["name"]; ?></option>            
+            <?php endforeach; ?>
+        </select>
+        <br />		
+        <p><input class="formbutton" type="submit" value="&raquo; <?php echo $this->I18n->t('speichern'); ?>" id="speichern"></p>
+    </fieldset>	
+</form>

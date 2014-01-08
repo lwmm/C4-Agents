@@ -97,7 +97,7 @@ class Exporter extends BaseController
 
     private function getLineCountForEachTable()
     {
-        $repository = new Repository(\lw_registry::getInstance()->getEntry("db"));
+        $repository = new Repository();
 
         $tables = $this->Transporter->getAllTables();
         $array = array();
