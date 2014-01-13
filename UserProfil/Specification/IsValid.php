@@ -46,6 +46,16 @@ class IsValid extends BaseIsValid
             $this->addError('name', "allowedLetters");
         }
 
+        $config = \lw_registry::getInstance()->getEntry("config");
+        if (isset($config["general"]["passwordStrength"])) {           
+            $pws = new \lw_passwordStrength('', trim($dto->getValueByKey("password")));
+            $pwstrength = $pws->getPasswordStrength();
+
+            if ($pwstrength < $config["general"]["passwordStrength"]) {
+                $this->addError('password', "strength");
+            }
+        }
+
         $pass = trim($dto->getValueByKey("password"));
         if (strlen($pass) > 0 && strlen($pass) < 5) {
             $this->addError('password', "length");
@@ -72,7 +82,7 @@ class IsValid extends BaseIsValid
         }
 
         for ($i = 1; $i <= 5; $i++) {
-            $shortcut =trim($dto->getValueByKey("shortcut" . $i));
+            $shortcut = trim($dto->getValueByKey("shortcut" . $i));
             if (!ctype_digit($shortcut) && !empty($shortcut)) {
                 $this->addError("shortcut" . $i, "nonDigit");
             }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Lw\Contentory\Agent\UserProfil;
+namespace Lw\Contentory\Agent\Roles;
 
 use \Lw\Contentory\Library\Controller\Controller as BaseController;
 use \Lw\Contentory\Library\I18n as I18n;
@@ -20,10 +20,10 @@ class Controller extends BaseController
     public function __construct($Id, $Configuration, $Language)
     {
         parent::__construct($Configuration, $Language);
-        $this->I18n = I18n::getInstance($Language, "Lw/Contentory/Agent/UserProfil/View/I18n/");
+        $this->I18n = I18n::getInstance($Language, "Lw/Contentory/Agent/Roles/View/I18n/");
 
-        $this->ObjectIdentifier = 'userprofil';
-        $this->Agent = 'UserProfil';
+        $this->ObjectIdentifier = 'roles';
+        $this->Agent = 'Roles';
 
         $this->Request = \lw_registry::getInstance()->getEntry("request");
         $this->Repository = new Repository();
@@ -31,31 +31,10 @@ class Controller extends BaseController
 
     public function execute()
     {
-        if ($this->Request->getInt("checkpw")) {
-            $pws = new \lw_passwordStrength('', $this->Request->getRaw('pw'));
-             exit($pws->getPasswordStrength());
-        } else {
-            if ($this->Request->getInt("sent")) {
-                $dto = $this->buildDtoFromRequest();
+        $this->Response->SetOutputByKey('navigation', "");
+        $this->Response->SetOutputByKey('main', "");
 
-                $isValid = $this->getSpecification("IsValid");
-                if (!$isValid->isSatisfiedBy($dto)) {
-                    $this->setError($isValid->getErrors());
-                } else {
-                    $this->Repository->saveUser($dto);
-                    $auth = \lw_registry::getInstance()->getEntry("auth");
-                    $auth->reloadData();
-                    $this->pageReload($this->Uri->buildUri(array('obj' => 'userprofil', "saved" => 1), false));
-                }
-            } else {
-                $dto = new DTO($this->Repository->getUser());
-            }
-
-            $this->Response->SetOutputByKey('navigation', $this->showNavigation());
-            $this->Response->SetOutputByKey('main', $this->showForm($dto));
-
-            return $this->Response;
-        }
+        return $this->Response;
     }
 
     private function showNavigation()
@@ -65,19 +44,19 @@ class Controller extends BaseController
     }
 
     private function showForm($dto)
-    {
+    {                
         $view = $this->getView('Form');
-
+        
         $view->setShortcuts($this->Repository->getShortcuts());
-
+        
         if ($this->hasError()) {
             $view->setError($this->getError());
         }
         $view->setUser($dto);
-
+        
         return $view->render();
     }
-
+    
     protected function buildDtoFromRequest()
     {
         $auth = \lw_registry::getInstance()->getEntry("auth");

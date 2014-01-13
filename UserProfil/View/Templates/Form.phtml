@@ -3,9 +3,28 @@
 </style>
 
 <!-- lw:if secondaryUser -->
+<?php if(isset($this->checkPw)): ?>    
 <script>
-//    alert('[[[Eine weitere Person arbeitet bereits auf dieser Seite]]]');
+$(document).ready(function(){
+    $('#password').blur(function(){
+        password = $('#password').val();
+        $.get("<?php echo $this->Uri->buildUri(array('obj'=>'userprofil',"checkpw" => 1), false); ?>", { "pw": password }, 
+        function(data){ 
+            if (!data) {
+                data = 0;
+            }
+            var border = <?php echo $this->pwminstrength ?>;
+            if(data < border) {
+                    $('#pwstrength').html('<span style="display:inline-block; width:200px; text-align:center; background-color:#cc0000; color:#ffffff;">zu schwach: '+data+" / "+border+"</span>");
+            }
+            else {
+                    $('#pwstrength').html('<span style="display:inline-block; width:200px; text-align:center; background-color:#00cc00; color:#ffffff;">stark genug: '+data+" / "+border+"</span>");
+            }
+        });
+    });
+});
 </script>
+<?php endif; ?>
 <!-- lw:endif secondaryUser -->
 
 <form action="<?php echo $this->Uri->buildUri(array('obj'=>'userprofil'), false); ?>" id="userForm" method="post">
@@ -22,6 +41,7 @@
             <?php if (isset($this->error["name"]) && in_array("length", $this->error["name"])): ?><li><?php echo $this->I18n->t('Der Username besitzt eine unerlaubte L&auml;nge, bitte zwischen 3 und 255 Zeichen verwenden!'); ?></li><?php endif; ?>
             <?php if (isset($this->error["name"]) && in_array("existing", $this->error["name"])): ?><li><?php echo $this->I18n->t('Bitte einen anderen Usernamen verwenden, dieser existiert bereits'); ?></li><?php endif; ?>
             <?php if (isset($this->error["password"]) && in_array("length", $this->error["password"])): ?><li><?php echo $this->I18n->t('Das Passwort ist zu kurz, bitte mind. 5 Zeichen verwenden'); ?></li><?php endif; ?>
+            <?php if (isset($this->error["password"]) && in_array("strength", $this->error["password"])): ?><li><?php echo $this->I18n->t('Bitte ein schwierigeres Passwort w&auml;hlen'); ?></li><?php endif; ?>
             <?php if (isset($this->error["password_wdhl"]) && in_array("identical", $this->error["password_wdhl"])): ?><li><?php echo $this->I18n->t('Das Passwort und dessen WDHL stimme nicht &uuml;berein'); ?></li><?php endif; ?>
             <?php if (isset($this->error["firstname"]) && in_array("length", $this->error["firstname"])): ?><li><?php echo $this->I18n->t('Der Vorname besitzt eine unerlaubte L&auml;nge, bitte weniger als 256 Zeichen verwenden!'); ?></li><?php endif; ?>
             <?php if (isset($this->error["lastname"]) && in_array("length", $this->error["lastname"])): ?><li><?php echo $this->I18n->t('Der Nachname besitzt eine unerlaubte L&auml;nge, bitte weniger als 256 Zeichen verwenden!'); ?></li><?php endif; ?>
@@ -37,6 +57,7 @@
         <br />		
         <label for="password" class="lwadminform"><?php echo $this->I18n->t('Passwort'); ?>:</label>
         <input class="textbox" id="password" type="password" name="password">
+        <span id="pwstrength"></span>
         <br />		
         <label for="password_wdhl" class="lwadminform"><?php echo $this->I18n->t('Passwort WDHL'); ?>:</label>
         <input class="textbox" id="password_wdhl" type="password" size="50" name="password_wdhl">

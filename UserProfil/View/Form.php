@@ -18,6 +18,12 @@ class Form extends View
         } else {
             $this->view = new \lw_view(dirname(__FILE__) . '/Templates/Form.phtml');
         }
+        
+        $config = \lw_registry::getInstance()->getEntry("config");
+        if(isset($config["general"]["passwordStrength"])){
+            $this->view->pwminstrength = $config["general"]["passwordStrength"];
+            $this->view->checkPw = true;
+        }
     }
     
     public function setShortcuts($shortcuts)
